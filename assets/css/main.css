@@ -1,0 +1,251 @@
+/* ===== Fonts ===== */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Spectral:wght@400;600;700&display=swap");
+
+/* ===== Vars ===== */
+:root{
+  /* Theme */
+  --accent:#BF5700;
+  --text:#ffffff;
+  --veil:rgba(0,0,0,.28);
+  --card-bg:rgba(255,255,255,0.08);
+  --card-border:rgba(255,255,255,0.22);
+
+  /* Global sizing */
+  --base-text-size: 22px;
+
+  /* Hero sizing */
+  --hero-name-size: 4.0rem;     /* Your name */
+  --hero-tagline-size: 3.9rem;  /* “Exploring the chemistry…” nearly same size */
+  --hero-lede-size: 2.0rem;     /* Affiliation / intro paragraph */
+
+  /* Tiles */
+  --tile-img-max: 200px;        /* Image max-height inside tiles (adjust here) */
+}
+
+/* ===== Reset ===== */
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0; line-height:1.6; color:var(--text); font-size:var(--base-text-size)}
+a{color:var(--text); text-decoration:underline; text-underline-offset:2px}
+a:hover{color:#fff; text-decoration-color:var(--accent)}
+body,input,select,textarea{font-family:"Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif}
+h1,h2,h3{font-family:"Spectral", Georgia, "Times New Roman", serif; margin:0 0 .6rem}
+
+/* ===== Background photo (uniform brightness) ===== */
+body::before{
+  content:""; position:fixed; inset:0; z-index:-2;
+  background:url("../../images/Yasuni_Orthomosaic.jpeg") center/cover no-repeat;
+  filter:brightness(1.28) contrast(.98) saturate(1.05);
+}
+body::after{
+  content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
+  background:var(--veil);
+}
+
+/* ===== Layout helpers ===== */
+.container{width:min(1100px, calc(100% - 2rem)); margin:0 auto}
+
+/* ===== Top Nav ===== */
+.topnav{
+  position:fixed; top:0; left:0; right:0; height:64px; z-index:1000;
+  display:flex; align-items:center; justify-content:space-between; padding:0 1rem;
+  background:rgba(10,10,10,.5);
+  border-bottom:1px solid rgba(255,255,255,.15);
+  backdrop-filter:saturate(140%) blur(8px);
+}
+.topnav .brand{color:#fff; text-decoration:none; font-weight:700; letter-spacing:.3px}
+.topnav nav a{color:#fff; text-decoration:none; margin-left:1rem; padding-bottom:4px; opacity:.95}
+.topnav nav a:hover{opacity:1; border-bottom:2px solid var(--accent)}
+body{padding-top:64px}
+
+/* ===== Hero (no boxes) ===== */
+.hero{padding:3rem 0 2.5rem}
+.hero-grid{display:grid; grid-template-columns:1.25fr .9fr; gap:2rem; align-items:start}
+@media (max-width:900px){ .hero-grid{grid-template-columns:1fr} }
+
+.name{
+  font-size: var(--hero-name-size);
+  font-weight:700;
+  line-height:1.15;
+  margin:0 0 .4rem;
+}
+.lede{font-size:var(--hero-lede-size); max-width:60ch}
+.sublede{max-width:70ch; opacity:.95}
+h2.tagline{
+  font-size: var(--hero-tagline-size);
+  font-weight:700;
+  margin:0 0 .35rem;
+}
+.divider{border:0; height:1px; background:rgba(255,255,255,.8); margin:.75rem 0 1rem}
+.divider-wide{margin:2.2rem 0 2rem; background:rgba(255,255,255,.6)}
+/* Remove the second divider under the tagline if present */
+.hero > .divider.divider-wide:last-of-type{ display:none !important; }
+
+/* Profile cluster */
+.profile{display:flex; flex-direction:column; align-items:center; gap:1rem}
+.headshot{
+  width:240px; height:240px; border-radius:9999px; overflow:hidden;
+  border:3px solid rgba(255,255,255,.9); box-shadow:0 6px 18px rgba(0,0,0,.35);
+}
+.headshot img{width:100%; height:100%; object-fit:cover}
+
+/* Icon row (large white discs) */
+.social-row{display:flex; gap:.9rem; flex-wrap:wrap; justify-content:center; align-items:center}
+.icon-btn{
+  display:flex; align-items:center; justify-content:center;
+  width:68px; height:68px; border-radius:9999px;
+  background:#fff; color:#111; text-decoration:none;
+  border:1px solid rgba(255,255,255,.35);
+  box-shadow:0 4px 14px rgba(0,0,0,.16);
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.icon-btn:hover{transform:translateY(-1px); box-shadow:0 6px 18px rgba(0,0,0,.22); outline:2px solid var(--accent)}
+.icon-graphic, .icon-btn svg{width:58%; height:58%; display:block; object-fit:contain; fill:currentColor}
+
+/* ===== Sections ===== */
+.section{padding:1.5rem 1rem 3rem}
+
+/* ===== Research Tiles (1×3 on desktop) ===== */
+.tiles{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);   /* 3 columns on large screens */
+  gap:1.1rem;
+}
+@media (max-width:1100px){
+  .tiles{ grid-template-columns:repeat(2, 1fr); }
+}
+@media (max-width:700px){
+  .tiles{ grid-template-columns:1fr; }
+}
+
+/* Compact tile layout: title ABOVE image */
+.tile{
+  display:flex; flex-direction:column; align-items:center; justify-content:flex-start;
+  gap:.55rem; padding:.85rem .85rem 1rem; min-height:260px; cursor:pointer;
+  border-radius:14px; background:var(--card-bg);
+  border:1px solid var(--card-border); box-shadow:0 10px 24px rgba(0,0,0,.18);
+  text-align:center;
+}
+/* kill old full-bleed behaviors if any were in global css */
+.tile::after{display:none !important;}
+.tile:hover img{transform:none !important;}
+
+.tile h3{
+  position:static !important; color:#fff; font-size:1.25rem; font-weight:700;
+  margin:0; text-align:center; text-shadow:0 1px 2px rgba(0,0,0,.35);
+}
+
+.tile img{
+  position:static !important; width:auto; max-width:88%; height:auto;
+  max-height: var(--tile-img-max);          /* control tile image size here */
+  object-fit:contain; margin:0 auto;
+  filter:none !important; transform:none !important;
+}
+
+/* ===== Modals ===== */
+.modal{position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,.55); z-index:2000; padding:1rem}
+.modal[aria-hidden="false"]{display:flex}
+.modal-card{
+  max-width:960px; width:min(92vw,960px);
+  background:#f7f6f3; color:#0f1115;
+  border:1px solid #e7ebe6; border-radius:14px; overflow:auto; max-height:90vh;
+  box-shadow:0 20px 60px rgba(0,0,0,.5);
+}
+.modal-body{padding:1rem 1.25rem}
+.modal-body h3{font-size:2rem; font-weight:800; margin:.3rem 0 .75rem}
+.modal-actions{display:flex; justify-content:flex-end; gap:.5rem; padding:0 1.25rem 1rem}
+.btn{padding:.5rem .9rem; border-radius:8px; border:1px solid #d8dcd6; background:#fff; color:#0f1115; text-decoration:none}
+.btn:hover{background:#f1f1ef}
+.btn.primary{background:var(--accent); border-color:var(--accent); color:#fff}
+
+/* Shorter figures in modal */
+.modal-gallery{ display:flex; flex-direction:column; gap:.6rem; padding:0 1.25rem .25rem }
+.modal-gallery figure{ margin:0 }
+.modal-gallery img{ width:100%; height:auto; max-height:360px; object-fit:contain; border-radius:6px; background:#fff }
+.modal-gallery figcaption{ font-size:.92rem; color:#333; opacity:.95; margin-top:.25rem }
+
+/* Superscript references (no bullets) */
+.refs{ list-style:none; margin:.65rem 1.25rem 0 1.25rem; padding:0; counter-reset: ref; }
+.refs li{ margin:.25rem 0; line-height:1.35; }
+.refs li::before{ counter-increment: ref; content: counter(ref); vertical-align: super; font-size:.7em; margin-right:.35rem; }
+
+/* ===== Footer ===== */
+#footer{background:rgba(5,5,5,.55); color:#fff; padding:.9rem 0; border-top:1px solid rgba(255,255,255,.15)}
+#footer .container{width:min(1100px, calc(100% - 2rem)); margin:0 auto}
+#footer a{color:#fff; text-decoration:underline}
+
+/* ===== Focus ===== */
+:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+/* ===== Small screens ===== */
+@media (max-width:736px){
+  .name{font-size: clamp(2.4rem, 8vw, var(--hero-name-size));}
+  h2.tagline{font-size: clamp(2.0rem, 7.5vw, var(--hero-tagline-size));}
+  .lede{font-size: clamp(1.2rem, 5.2vw, var(--hero-lede-size));}
+}
+/* === FORCE 1×3 TILES ON DESKTOP, TITLE ABOVE IMAGE === */
+.section .tiles{
+  display:grid !important;
+  grid-template-columns: repeat(3, minmax(0,1fr)) !important; /* 3 across */
+  gap: 1.1rem !important;
+}
+
+/* keep it 2-up on medium, 1-up on small */
+@media (max-width: 1100px){
+  .section .tiles{ grid-template-columns: repeat(2, minmax(0,1fr)) !important; }
+}
+@media (max-width: 700px){
+  .section .tiles{ grid-template-columns: 1fr !important; }
+}
+
+/* Title above image (win over old “full-bleed” styles) */
+.section .tile{
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:flex-start !important;
+  text-align:center !important;
+  gap:.55rem !important;
+  padding:.85rem .85rem 1rem !important;
+}
+.section .tile::after{ display:none !important; }          /* kill gradient overlay */
+.section .tile h3{
+  position:static !important;
+  color:#fff !important;
+  font-size:1.75rem !important;
+  font-weight:700 !important;
+  margin:0 !important;
+  text-shadow:0 1px 2px rgba(0,0,0,.35) !important;
+}
+.section .tile img{
+  position:static !important;
+  width:auto !important;
+  max-width:88% !important;
+  height:auto !important;
+  max-height: 200px !important; /* adjust image size here */
+  object-fit:contain !important;
+  margin:0 auto !important;
+  filter:none !important;
+  transform:none !important;
+}
+/* Center tile headers (works for h2 or h3) */
+.section .tile h2,
+.section .tile h3{
+  position: static !important;   /* in case older styles were absolute */
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin: 0 .25rem .25rem;       /* small breathing room */
+}
+
+/* Bigger tile headers */
+.section .tile h3 {
+  font-size: 5rem;   /* default was ~1.2rem */
+  font-weight: 700;
+  text-align: center;
+  margin: 0 .25rem .5rem;
+}
+
+body.modal-open {
+  overflow: hidden;
+}
